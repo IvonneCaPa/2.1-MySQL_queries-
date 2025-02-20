@@ -32,6 +32,28 @@ select asg.nombre as "Asignaturas sin profesor asignado" from asignatura as asg 
 select distinct dep.nombre from departamento as dep left join profesor as pro on dep.id = pro.id_departamento left join asignatura as asg on pro.id_profesor = asg.id_profesor left join alumno_se_matricula_asignatura as al on asg.id = al.id_asignatura where asg.nombre is null and al.id_curso_escolar is null;
 -- Consultas resumen
 -- 16
+select count(*) as "Total Alumnos Existentes" from persona where tipo = "alumno";
+-- 17
+select count(*) as "Total Alumnos que nacieron en 1999" from persona where tipo = "alumno" and fecha_nacimiento like '1999%';
+-- 18
+select departamento.nombre, count(profesor.id_profesor) as "Cantidad de Profesores" from profesor inner join departamento on profesor.id_departamento = departamento.id group by departamento.id order by count(profesor.id_profesor) desc;
+-- 19
+select departamento.nombre as Departamaneto, concat(persona.nombre, " ",persona.apellido1, " ",persona.apellido2) as Profesor from departamento left join profesor on departamento.id = profesor.id_departamento left join persona on profesor.id_profesor = persona.id;
+-- 20
+select gr.nombre, asg.nombre from grado as gr left join asignatura as asg on gr.id = asg.id_grado order by gr.nombre desc;
+-- 21
+select grado.nombre, count(asignatura.id_grado) as "Número de Asignaturas" from grado inner join asignatura on grado.id=asignatura.id_grado group by grado.nombre having count(asignatura.id_grado) > 40;
+-- 22
+select grado.nombre as Grado, asignatura.tipo as "Tipo de Asignatura", sum(asignatura.creditos) as "Total de Creditos" from grado inner join asignatura on grado.id = asignatura.id_grado group by grado.nombre, asignatura.tipo order by grado.nombre, asignatura.tipo; 
+-- 23
+select ce.anyo_inicio, count(distinct am.id_alumno) from alumno_se_matricula_asignatura am inner join curso_escolar ce on am.id_curso_escolar = ce.id group by ce.anyo_inicio;
+-- 24
+select pr.id_profesor, pe.nombre, pe.apellido1, pe.apellido2, count(ag.id) as " No Asignaturas" from persona pe right join profesor pr on pe.id = pr.id_profesor left join asignatura ag on pr.id_profesor =  ag.id_profesor group by pr.id_profesor order by count(ag.id) desc; 
+-- 25
+select pe.*, gr.nombre as grado, ag.nombre as asignatura, ag.tipo, ag.creditos, ag.cuatrimestre, ce.anyo_inicio, ce.anyo_fin from persona pe inner join alumno_se_matricula_asignatura am on pe.id = am.id_alumno inner join asignatura ag on am.id_asignatura = ag.id inner join grado gr on  ag.id_grado = gr.id inner join curso_escolar ce on am.id_curso_escolar = ce.id order by fecha_nacimiento desc limit 1;
+-- 26
+select concat(pe.nombre, " ", pe.apellido1, " ", pe.apellido2) as Profesor, de.nombre as Departamento from persona pe inner join profesor pr on pe.id = pr.id_profesor left join asignatura ag on pr.id_profesor = ag.id_profesor inner join departamento de on pr.id_departamento = de.id where ag.id_profesor is null order by Profesor;
+
 
 
 
