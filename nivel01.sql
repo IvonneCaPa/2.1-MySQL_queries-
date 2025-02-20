@@ -53,7 +53,29 @@ select pr.id_profesor, pe.nombre, pe.apellido1, pe.apellido2, count(ag.id) as " 
 select pe.*, gr.nombre as grado, ag.nombre as asignatura, ag.tipo, ag.creditos, ag.cuatrimestre, ce.anyo_inicio, ce.anyo_fin from persona pe inner join alumno_se_matricula_asignatura am on pe.id = am.id_alumno inner join asignatura ag on am.id_asignatura = ag.id inner join grado gr on  ag.id_grado = gr.id inner join curso_escolar ce on am.id_curso_escolar = ce.id order by fecha_nacimiento desc limit 1;
 -- 26
 select concat(pe.nombre, " ", pe.apellido1, " ", pe.apellido2) as Profesor, de.nombre as Departamento from persona pe inner join profesor pr on pe.id = pr.id_profesor left join asignatura ag on pr.id_profesor = ag.id_profesor inner join departamento de on pr.id_departamento = de.id where ag.id_profesor is null order by Profesor;
-
+use tienda;
+-- 27
+select nombre from producto;
+-- 28
+select nombre, precio from producto;
+-- 29
+select * from producto;
+-- 30
+select nombre, precio as "precio en €", round((precio/0.96), 2) as "precio en $" from producto;
+-- 31
+select nombre as Producto, precio as Euros, round((precio/0.96), 2) as "Dólares estaudinenses" from producto;
+-- 32
+select upper(nombre), precio from producto;
+-- 33
+select lower(nombre), precio from producto;
+-- 34
+select nombre, upper(left(nombre, 2)) as "Abreviatura" from fabricante;
+-- 35
+select nombre, round(precio) as Precio from producto;
+-- 36
+select nombre, truncate(precio, 0) from producto;
+-- 37
+select distinct fa.codigo as "Código fabricante con producto" from producto pr inner join fabricante fa on pr.codigo_fabricante = fa.codigo; 
 
 
 
